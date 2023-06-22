@@ -18,6 +18,7 @@ class MainWindowDesign(Ui_MainWindow):
         self.actionZapisz.triggered.connect(self.file_save)
         self.pushButton_3.clicked.connect(self.greyscale)
         self.pushButton_4.clicked.connect(self.reset)
+        self.pushButton_2.clicked.connect(self.start_machine)
 
     def getfiles(self):
         dlg = QtWidgets.QFileDialog()
@@ -61,3 +62,28 @@ class MainWindowDesign(Ui_MainWindow):
         self.image = self.image_original
         self.update_image()
 
+    def start_machine(self):
+        dlg = CustomDialog()
+        if dlg.exec():
+            print("Starting machine!")
+        else:
+            print("Start canceled!")
+
+
+class CustomDialog(QtWidgets.QDialog):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Confirm!")
+
+        QBtn = QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
+
+        self.buttonBox = QtWidgets.QDialogButtonBox(QBtn)
+        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.rejected.connect(self.reject)
+
+        self.layout = QtWidgets.QVBoxLayout()
+        message = QtWidgets.QLabel("Are you sure you want to start machine?")
+        self.layout.addWidget(message)
+        self.layout.addWidget(self.buttonBox)
+        self.setLayout(self.layout)
